@@ -1,26 +1,22 @@
 import { $ } from '@wdio/globals'
 import Page from './base.page.js';
 
-/**
- * sub page containing specific selectors and methods for a specific page
- */
 class ChartsPage extends Page {
-    /**
-     * define selectors using getter methods
-     */
+    
+    //Getters
     get searchbar () {
         return $("//input[@class='ui_browser_input']");
     }
 
-    get includeButton () {
+    get includeBtn () {
         return $("//a[text()='Include']");
     }
 
-    get genreButton () {
+    get genreBtn () {
         return $("//a[text()='Genre']");
     }
 
-    get updateChartButton () {
+    get updateChartBtn () {
         return $("//a[text()='Update chart']");
     }
 
@@ -28,20 +24,44 @@ class ChartsPage extends Page {
         return $$("//div[@class='page_charts_section_charts_item_genres_primary']").slice(0,10);
     }
 
-    get dateSelector(){
+    get releaseDates(){
+        return $$("//div[@class='page_charts_section_charts_item_date']").slice(0,10);
+    }
+
+    get dateSelectorBtn(){
         return $("//div[text()='2023']");
     }
 
-    get seventysDecade(){
+    get seventysDecadeBtn(){
         return $("//div[@id='date_year_chooser_decade_1970']");
     }
 
+    get dateCloseBtn(){
+        return $("//div[@class='page_chart_query_date_close']/a");
+    }
+
+    get playerCloseBtn() {
+        return $("//cnx[@class='cnx-ui-btn cnx-d-sm-none cnx-close-button']");
+    }
+
+    get adCloseBtn(){
+        return $("//div[@class='ad-close-button']");
+    }
+    //Overwrite
+    open () {
+        return super.open('charts');
+    }
+
+    //E2E
     async jazzFusion () {
         (await this.searchbar).scrollIntoView();
         (await this.searchbar).setValue("Jazz Fusion");
-        (await this.includeButton).click();
-        (await this.genreButton).click();
-        (await this.updateChartButton).click();
+        (await this.includeBtn).scrollIntoView();
+        (await this.playerCloseBtn).click();
+        (await this.adCloseBtn).click();
+        (await this.includeBtn).click();
+        (await this.genreBtn).click();
+        (await this.updateChartBtn).click();
         await this.pageLoadingController("Top Jazz Fusion albums of 2023");
         const primGen = await this.primaryGenres
         let counter = 0;
@@ -61,10 +81,16 @@ class ChartsPage extends Page {
         }
     }
 
+    async seventysBest(){
+        (await this.dateSelectorBtn).click();
+        (await this.playerCloseBtn).click();
+        (await this.adCloseBtn).click();
+        (await this.seventysDecadeBtn).click();
+        (await this.dateCloseBtn).click();
+        (await this.updateChartBtn).click();
+        await this.pageLoadingController("Top albums of the 1970s");
 
-
-    open () {
-        return super.open('charts');
+        
     }
 }
 
