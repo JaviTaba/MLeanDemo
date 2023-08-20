@@ -13,5 +13,11 @@
   },
   "scripts": {
     "wdio": "wdio run ./wdio.conf.js"
+  },
+  "dependencies": {
+    "@wdio/globals": "^8.15.4",
+    "chai": "^4.0.2",
+    "chai-webdriverio": "^1.0.0",
+    "webdriverio": "^8.15.4"
   }
 }
